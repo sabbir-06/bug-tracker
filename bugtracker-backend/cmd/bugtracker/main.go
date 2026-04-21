@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -65,6 +66,7 @@ func main() {
 // Production server creation
 func createServer() *http.Server {
 	r := mux.NewRouter()
+	addr := getServerAddr()
 
 	// Apply CORS middleware to all routes
 	c := cors.New(cors.Options{
@@ -87,9 +89,18 @@ func createServer() *http.Server {
 	apiRouter := r.PathPrefix("/api").Subrouter()
 	handlers.RegisterRoutes(apiRouter)
 
-	log.Printf("Starting server on :8080")
+	log.Printf("Starting server on %s", addr)
 	return &http.Server{
-		Addr:    "0.0.0.0:8080",
+		Addr:    addr,
 		Handler: handler,
 	}
+}
+
+func getServerAddr() string {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	return fmt.Sprintf("0.0.0.0:%s", port)
 }
