@@ -10,16 +10,4 @@ pipeline {
             }
         }
     }
-}pipeline {
-    agent any
-
-    stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello World'
-                sh 'echo "hello again"'
-                sh 'date'
-            }
-        }
-    }
 }
