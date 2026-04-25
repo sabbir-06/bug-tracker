@@ -11,12 +11,14 @@ pipeline {
             }
             environment {
                 HOME = "${WORKSPACE}"
+                GOPATH = "${WORKSPACE}/.go"
+                GOMODCACHE = "${WORKSPACE}/.go/pkg/mod"
                 XDG_CACHE_HOME = "${WORKSPACE}/.cache"
                 GOCACHE = "${WORKSPACE}/.cache/go-build"
             }
             steps {
                 dir('bugtracker-backend') {
-                    sh 'mkdir -p "$XDG_CACHE_HOME" "$GOCACHE" && go test ./... -v'
+                    sh 'mkdir -p "$GOPATH" "$GOMODCACHE" "$XDG_CACHE_HOME" "$GOCACHE" && go test ./... -v'
                 }
             }
         }
