@@ -30,6 +30,16 @@ pipeline {
                     reuseNode true
                 }
             }
+            steps {
+                dir ('bugtracker-frontend'){
+                    sh '''
+                    npm ci
+                    npm test
+
+
+                    '''
+                }
+            }
         }
     }
 }
