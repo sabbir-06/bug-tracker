@@ -43,14 +43,19 @@ func TestServerInitialization(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 
 	// Test CORS with an OPTIONS request
-	req, err := http.NewRequest("OPTIONS", "http://localhost:8081/api/health", nil)
-	assert.NoError(t, err)
+	req, err := http.NewRequest("OPTIONS", fmt.Sprintf("http://localhost%s/api/health", testPort), nil)
+	if !assert.NoError(t, err) {
+		return
+	}
 	req.Header.Set("Origin", "http://localhost:3000")
 	req.Header.Set("Access-Control-Request-Method", "GET")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	assert.NoError(t, err)
+	if !assert.NoError(t, err) {
+		return
+	}
+	defer resp.Body.Close()
 	assert.Equal(t, http.StatusNoContent, resp.StatusCode)
 	assert.Equal(t, "http://localhost:3000", resp.Header.Get("Access-Control-Allow-Origin"))
 
