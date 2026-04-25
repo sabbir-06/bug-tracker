@@ -27,7 +27,7 @@ func TestServerInitialization(t *testing.T) {
 	os.Setenv("DB_PATH", testutil.GetTestDBPath())
 	defer testutil.CleanupTestDB()
 
-	testPort := ":8081" // Use a different port for testing
+	testPort := ":8082" // Use a different port for testing
 	srv := createTestServer()
 	srv.Addr = testPort // Override the server port
 
@@ -66,7 +66,7 @@ func TestCORSConfiguration(t *testing.T) {
 	os.Setenv("DB_PATH", testutil.GetTestDBPath())
 	defer testutil.CleanupTestDB()
 
-	testPort := ":8081"
+	testPort := ":8082"
 	srv := createTestServer()
 	srv.Addr = testPort
 
@@ -222,7 +222,7 @@ func createTestServer() *http.Server {
 	}).Handler(r)
 
 	return &http.Server{
-		Addr:    ":8081",
+		Addr:    ":8082",
 		Handler: handler,
 	}
 }
