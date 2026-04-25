@@ -38,6 +38,11 @@ pipeline {
                     '''
                 }
             }
+            post {
+                always {
+                    junit 'bugtracker-frontend/junit.xml'
+                }
+            }
         }
     }
 }
