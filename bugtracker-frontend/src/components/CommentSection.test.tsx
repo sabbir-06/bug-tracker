@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CommentSection from "./CommentSection";
+import { API_BASE_URL } from "@/config";
 import { Comment } from "@/types/comment";
 
 global.fetch = jest.fn();
@@ -52,7 +53,7 @@ describe("CommentSection", () => {
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        "http://localhost:8080/api/bugs/1/comments",
+        `${API_BASE_URL}/api/bugs/1/comments`,
         {
           method: "POST",
           headers: {
@@ -121,7 +122,15 @@ describe("CommentSection", () => {
       />
     );
 
-    expect(screen.getByText(/6\/10\/23.*(10|11):00:00/)).toBeInTheDocument();
+    const expectedTimestamp = new Date(mockComments[0].createdAt).toLocaleString(
+      "en-US",
+      {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }
+    );
+
+    expect(screen.getByText(expectedTimestamp)).toBeInTheDocument();
 
     jest.useRealTimers();
   });

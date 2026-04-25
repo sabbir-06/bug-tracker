@@ -1,4 +1,5 @@
 import { createBug, getBugs, updateBug, deleteBug } from "@/api/bugs";
+import { API_BASE_URL } from "@/config";
 
 global.fetch = jest.fn();
 
@@ -32,9 +33,7 @@ describe("Bug API", () => {
       });
 
       const result = await getBugs();
-      expect(global.fetch).toHaveBeenCalledWith(
-        "http://localhost:8080/api/bugs"
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${API_BASE_URL}/api/bugs`);
       expect(result).toEqual(mockBugs);
     });
 
@@ -77,14 +76,11 @@ describe("Bug API", () => {
       });
 
       const result = await createBug(mockBug);
-      expect(global.fetch).toHaveBeenCalledWith(
-        "http://localhost:8080/api/bugs",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(mockBug),
-        }
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${API_BASE_URL}/api/bugs`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(mockBug),
+      });
       expect(result).toEqual(mockResponse);
     });
 
@@ -131,14 +127,11 @@ describe("Bug API", () => {
       });
 
       const result = await updateBug("1", mockBug);
-      expect(global.fetch).toHaveBeenCalledWith(
-        "http://localhost:8080/api/bugs/1",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(mockBug),
-        }
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${API_BASE_URL}/api/bugs/1`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(mockBug),
+      });
       expect(result).toEqual(mockBug);
     });
 
@@ -179,12 +172,9 @@ describe("Bug API", () => {
       });
 
       await deleteBug("1");
-      expect(global.fetch).toHaveBeenCalledWith(
-        "http://localhost:8080/api/bugs/1",
-        {
-          method: "DELETE",
-        }
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${API_BASE_URL}/api/bugs/1`, {
+        method: "DELETE",
+      });
     });
 
     it("should handle not found error when deleting a bug", async () => {
