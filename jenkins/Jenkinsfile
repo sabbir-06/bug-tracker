@@ -35,14 +35,7 @@ pipeline {
                     sh '''
                     npm ci
                     npm test
-
-
                     '''
-                }
-                post {
-                    always {
-                        junit 'bugtracker-frontend/test-results.xml'
-                    }
                 }
             }
         }
