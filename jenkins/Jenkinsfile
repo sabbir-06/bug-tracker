@@ -9,9 +9,14 @@ pipeline {
                     reuseNode true
                 }
             }
+            environment {
+                HOME = "${WORKSPACE}"
+                XDG_CACHE_HOME = "${WORKSPACE}/.cache"
+                GOCACHE = "${WORKSPACE}/.cache/go-build"
+            }
             steps {
                 dir('bugtracker-backend') {
-                    sh 'go test ./... -v'
+                    sh 'mkdir -p "$XDG_CACHE_HOME" "$GOCACHE" && go test ./... -v'
                 }
             }
         }
