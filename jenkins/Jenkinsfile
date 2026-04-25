@@ -10,4 +10,19 @@ pipeline {
             }
         }
     }
+<<<<<<< Updated upstream
+=======
+}pipeline {
+    agent any
+
+    stages {
+        stage('Unit Tests - Backend') {
+            steps {
+                dir ('bugtracker-backend'){
+                 sh   go test ./... -v
+                }
+            }
+        }
+    }
+>>>>>>> Stashed changes
 }
