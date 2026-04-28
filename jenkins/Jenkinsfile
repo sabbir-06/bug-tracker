@@ -1,46 +1,48 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Unit Tests - Backend') {
-            agent {
-                docker {
-                    image 'snakee/golang-junit:1.21'
-                    reuseNode true
+         stages {
+            stage ('Execue Unit test') {
+                     parallel {
+                stage('Unit Tests - Backend') {
+                    agent {
+                        docker {
+                            image 'snakee/golang-junit:1.21'
+                            reuseNode true
+                        }
+                    }
+                    environment {
+                        HOME = "${WORKSPACE}"
+                        GOPATH = "${WORKSPACE}/.go"
+                        GOMODCACHE = "${WORKSPACE}/.go/pkg/mod"
+                        XDG_CACHE_HOME = "${WORKSPACE}/.cache"
+                        GOCACHE = "${WORKSPACE}/.cache/go-build"
+                    }
+                    steps {
+                        dir('bugtracker-backend') {
+                            sh '''
+                            mkdir -p "$GOPATH" "$GOMODCACHE" "$XDG_CACHE_HOME" "$GOCACHE"
+                            go test ./... -v 2>&1 | go-junit-report -set-exit-code > report.xml
+                            go test ./... -covermode=atomic -coverprofile=coverage.out
+                            go tool cover -html=coverage.out -o coverage.html
+                            mkdir -p reports
+                            mv coverage.html reports/
+                            '''
+                        }
+                    }
+                    post {
+                        always {
+                            junit 'bugtracker-backend/report.xml'
+                            publishHTML target: [
+                                reportDir: 'bugtracker-backend/reports',
+                                reportFiles: 'coverage.html',
+                                reportName: 'Backend Coverage Report'
+                            ]
+                        }
+                    }
                 }
-            }
-            environment {
-                HOME = "${WORKSPACE}"
-                GOPATH = "${WORKSPACE}/.go"
-                GOMODCACHE = "${WORKSPACE}/.go/pkg/mod"
-                XDG_CACHE_HOME = "${WORKSPACE}/.cache"
-                GOCACHE = "${WORKSPACE}/.cache/go-build"
-            }
-            steps {
-                dir('bugtracker-backend') {
-                    sh '''
-                    mkdir -p "$GOPATH" "$GOMODCACHE" "$XDG_CACHE_HOME" "$GOCACHE"
-                    go test ./... -v 2>&1 | go-junit-report -set-exit-code > report.xml
-                    go test ./... -covermode=atomic -coverprofile=coverage.out
-                    go tool cover -html=coverage.out -o coverage.html
-                    mkdir -p reports
-                    mv coverage.html reports/
-                    '''
-                }
-            }
-            post {
-                always {
-                    junit 'bugtracker-backend/report.xml'
-                    publishHTML target: [
-                        reportDir: 'bugtracker-backend/reports',
-                        reportFiles: 'coverage.html',
-                        reportName: 'Backend Coverage Report'
-                    ]
-                }
-            }
-        }
 
-        stage('Unit Tests - Frontend') {
+                 stage('Unit Tests - Frontend') {
             agent {
                 docker {
                     image 'node:20-alpine'
@@ -59,7 +61,17 @@ pipeline {
                 always {
                     junit 'bugtracker-frontend/test-results.xml'
                 }
+                }
+              }
+
             }
-        }
+         post {
+            always {
+                cleanWs()
+            }
+         }
+        }             
+
+        
     }
 }

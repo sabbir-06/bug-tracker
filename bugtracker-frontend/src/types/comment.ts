@@ -1,12 +1,12 @@
 export interface Comment {
-    id: string;
-    bugId: string;
-    author: string;
-    content: string;
-    createdAt: string;
+  id: string;
+  bugId: string;
+  author: string;
+  content: string;
+  createdAt: string;
 }
 
 export interface CreateCommentRequest {
-    author: string;
-    content: string;
-} 
+  author: string;
+  content: string;
+}

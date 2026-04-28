@@ -207,8 +207,8 @@ export default function BugList() {
                                               bug.status === "Open"
                                                 ? "bg-red-100 text-red-800"
                                                 : bug.status === "In Progress"
-                                                ? "bg-yellow-100 text-yellow-800"
-                                                : "bg-green-100 text-green-800"
+                                                  ? "bg-yellow-100 text-yellow-800"
+                                                  : "bg-green-100 text-green-800"
                                             }`}
                     >
                       {bug.status}
@@ -221,8 +221,8 @@ export default function BugList() {
                                               bug.priority === "High"
                                                 ? "bg-red-100 text-red-800"
                                                 : bug.priority === "Medium"
-                                                ? "bg-yellow-100 text-yellow-800"
-                                                : "bg-green-100 text-green-800"
+                                                  ? "bg-yellow-100 text-yellow-800"
+                                                  : "bg-green-100 text-green-800"
                                             }`}
                     >
                       {bug.priority}

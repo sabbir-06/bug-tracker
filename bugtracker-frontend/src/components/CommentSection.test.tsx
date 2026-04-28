@@ -122,13 +122,12 @@ describe("CommentSection", () => {
       />
     );
 
-    const expectedTimestamp = new Date(mockComments[0].createdAt).toLocaleString(
-      "en-US",
-      {
-        dateStyle: "short",
-        timeStyle: "medium",
-      }
-    );
+    const expectedTimestamp = new Date(
+      mockComments[0].createdAt
+    ).toLocaleString("en-US", {
+      dateStyle: "short",
+      timeStyle: "medium",
+    });
 
     expect(screen.getByText(expectedTimestamp)).toBeInTheDocument();
 
