@@ -67,7 +67,8 @@ pipeline {
               stage ('Launch Application') {
                 agent {
                     docker{
-                        image 'docker:27.5.1-cli'
+                        image 'docker:27-cli'
+                        alwaysPull true
                         reuseNode true
                         args '-v /var/run/docker.sock:/var/run/docker.sock -u 0'
                     }
@@ -81,6 +82,7 @@ pipeline {
                 agent {
                     docker {
                         image 'mcr.microsoft.com/playwright:v1.50.0-jammy'
+                        alwaysPull true
                         reuseNode true
                         args '-u 0 --network=host'
                     }
