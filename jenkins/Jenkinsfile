@@ -110,7 +110,7 @@ pipeline {
               stage ('E2E Tests') {
                 agent {
                     docker {
-                         image 'mcr.microsoft.com/playwright:v1.50.0-jammy'
+                         image 'mcr.microsoft.com/playwright:v1.59.1-jammy'
                         alwaysPull true
                         reuseNode true
                         args '-u 0 --network=host'
