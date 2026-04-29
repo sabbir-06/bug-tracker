@@ -96,6 +96,18 @@ pipeline {
                     }
                 }
 
+                post {
+                    always {
+                        junit 'tests-api/test-results/results.xml'
+                        publishHTML target: [ 
+                          reportDir: 'test-api/playwrgh-report'
+                          reportFiles: 'index.html'
+                          reportName 'playwright API Test Report'
+                        ]
+
+                    }
+                }
+
               }
 
             }
