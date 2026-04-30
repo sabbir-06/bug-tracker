@@ -149,9 +149,9 @@ pipeline {
                 }
                 post {
                     always {
-                        publishHTML targets: [
-                            reportDir: 'tests-perf'
-                            reportFiles: 'perf-results.html'
+                        publishHTML target: [
+                            reportDir: 'tests-perf',
+                            reportFiles: 'perf-results.html',
                             reportName: 'performance Test Results Report'
                         ]
                     }
