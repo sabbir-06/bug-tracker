@@ -1,0 +1,28 @@
+# giving a name of the workflow
+name: CI
+
+# when we want this workflow to run
+on:
+  push: # push to github
+    branches: # specify the branch
+      - main
+  # we also want this trigger manually in the UI
+  workflow_dispatch:
+
+# Adding detail of the jobs
+jobs:
+  unit-tests-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+          cache-dependency-path: bugtracker-backend/go.sum
+
+      - name: Execute Backend Tests
+        working-directory: ./bugtracker-backend
+        run: |
+          go test -v ./...
